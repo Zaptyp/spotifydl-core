@@ -82,7 +82,7 @@ export default class SpotifyApi {
             0,
             data.tracks.items.map((item) => item.id)
         )
-        details.name = data.name + ' - ' + data.label
+        details.name = data.name + ' - ' + data.label + ' - ' + data.artists[0].name
         details.total_tracks = data.tracks.total
         if (data.tracks.next) {
             let offset = details.tracks.length

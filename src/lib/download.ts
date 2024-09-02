@@ -40,7 +40,7 @@ export const downloadYT = async (url: string): Promise<Buffer> => {
 export const downloadYTAndSave = async (url: string, filename = (Math.random() + 1).toString(36).substring(7) + '.mp3'): Promise<string> => {
     const audio = await downloadYT(url)
     try {
-        await writeFile(filename, audio)
+        await writeFile(`${os.tmpdir()}/${filename}`, audio)
         return filename
     } catch (err) {
         throw new SpotifyDlError(`Error While writing to File: ${filename}`)
