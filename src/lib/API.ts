@@ -56,12 +56,14 @@ export default class SpotifyApi {
         const data = (await this.spotifyAPI.getPlaylist(playlistId)).body
         const details = new Playlist(
             '',
+            [],
             0,
             data.tracks.items.map((item) => item.track!.id)
         )
 
         details.name = data.name + ' - ' + data.owner.display_name
         details.total_tracks = data.tracks.total
+        details.artists = data.owner.display_name ? [data.owner.display_name] : []
         if (data.tracks.next) {
             let offset = details.tracks.length
             while (details.tracks.length < details.total_tracks) {
@@ -79,11 +81,15 @@ export default class SpotifyApi {
         const data = (await this.spotifyAPI.getAlbum(albumId)).body
         const details = new Playlist(
             '',
+            [],
             0,
             data.tracks.items.map((item) => item.id)
         )
         details.name = data.name + ' - ' + data.label + ' - ' + data.artists[0].name
         details.total_tracks = data.tracks.total
+        data.artists.forEach((artist) => {
+            details.artists.push(artist.name)
+        })
         if (data.tracks.next) {
             let offset = details.tracks.length
             while (details.tracks.length < data.tracks.total) {
