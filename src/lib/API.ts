@@ -61,7 +61,7 @@ export default class SpotifyApi {
             data.tracks.items.map((item) => item.track!.id)
         )
 
-        details.name = /*data.owner.display_name + ' - ' +*/ data.name
+        details.name = data.owner.display_name + ' - ' + data.name
         details.total_tracks = data.tracks.total
         details.artists = data.owner.display_name ? [data.owner.display_name] : []
         if (data.tracks.next) {
@@ -85,7 +85,7 @@ export default class SpotifyApi {
             0,
             data.tracks.items.map((item) => item.id)
         )
-        details.name = /*data.artists[0].name + ' - '+*/data.name + ' - ' + data.label
+        details.name = data.artists[0].name + ' - '+data.name + ' - ' + data.label
         details.total_tracks = data.tracks.total
         data.artists.forEach((artist) => {
             details.artists.push(artist.name)
