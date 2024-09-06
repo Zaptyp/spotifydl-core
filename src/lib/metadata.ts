@@ -3,7 +3,7 @@ import { renameSync, unlinkSync } from 'fs'
 import { IMetadata, ITrack } from '../typings'
 import axios from 'axios'
 import os from 'os'
-import fs from 'fs'
+import { writeFileSync } from 'fs-extra'
 
 export default async (data: ITrack, file: string): Promise<string> => {
     const outputOptions: string[] = ['-map', '0:0', '-map', '1','-codec', 'copy', ]
@@ -17,7 +17,7 @@ export default async (data: ITrack, file: string): Promise<string> => {
     }
     const coverURL = metadata.attachments?.[0] ?? '';
     const response = await axios.get(coverURL, { responseType: 'arraybuffer' });
-    fs.writeFileSync(`${os.tmpdir()}/cover.jpg`, response.data);
+    writeFileSync(`${os.tmpdir()}/cover.jpg`, response.data);
     Object.keys(metadata).forEach((key) => {
         outputOptions.push('-metadata', `${String(key)}=${metadata[key as 'title' | 'artist' | 'date' | 'album']}`)
     })
