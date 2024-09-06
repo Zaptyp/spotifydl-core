@@ -21,11 +21,11 @@ export const downloadYT = async (url: string): Promise<Buffer> => {
     return await new Promise((resolve, reject) => {
         Ffmpeg(stream)
             .audioBitrate(128)
-            .save(filename)
+            .save(`${os.tmpdir()}/${filename}`)
             .on('error', (err) => reject(err))
             .on('end', async () => {
-                const buffer = await readFile(filename)
-                unlink(filename)
+                const buffer = await readFile(`${os.tmpdir()}/${filename}`)
+                unlink(`${os.tmpdir()}/${filename}`)
                 resolve(buffer)
             })
     })
@@ -40,8 +40,8 @@ export const downloadYT = async (url: string): Promise<Buffer> => {
 export const downloadYTAndSave = async (url: string, filename = (Math.random() + 1).toString(36).substring(7) + '.mp3'): Promise<string> => {
     const audio = await downloadYT(url)
     try {
-        await writeFile(`${filename}`, audio)
-        return filename
+        await writeFile(`${os.tmpdir()}/${filename}`, audio)
+        return `${os.tmpdir()}/${filename}`
     } catch (err) {
         throw new SpotifyDlError(`Error While writing to File: ${filename}`)
     }
