@@ -35,9 +35,9 @@
     "@types/node": "^22.9.0",
     "@types/spotify-web-api-node": "^5.0.11",
     "@types/yt-search": "^2.10.3",
-    "@typescript-eslint/eslint-plugin": "^8.13.0",
-    "@typescript-eslint/parser": "^8.12.1",
-    "eslint": "^9.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "eslint": "^8.57.1",
     "prettier": "^3.3.3",
     "typedoc": "^0.26.11",
     "typescript": "^5.6.3"
@@ -55,7 +55,7 @@
       "psl": "https://github.com/lupomontero/psl"
     },
     "yt-search": {
-      "jsonpath-plus": "^10.1.0"
+      "jsonpath-plus": "^10.2.0"
     }
   }
 }
