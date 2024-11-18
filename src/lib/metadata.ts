@@ -6,7 +6,7 @@ import os from 'os'
 import { writeFileSync } from 'fs-extra'
 
 export default async (data: ITrack, file: string): Promise<string> => {
-    const outputOptions: string[] = ['-map', '0:0', '-map', '1','-codec', 'copy', ]
+    const outputOptions: string[] = ['-map', '0:0', '-map', '1', '-codec', 'copy']
 
     const metadata: IMetadata = {
         title: data.name,
@@ -15,9 +15,9 @@ export default async (data: ITrack, file: string): Promise<string> => {
         date: data.release_date,
         attachments: [data.cover_url]
     }
-    const coverURL = metadata.attachments?.[0] ?? '';
-    const response = await axios.get(coverURL, { responseType: 'arraybuffer' });
-    writeFileSync(`${os.tmpdir()}/cover.jpg`, response.data);
+    const coverURL = metadata.attachments?.[0] ?? ''
+    const response = await axios.get(coverURL, { responseType: 'arraybuffer' })
+    writeFileSync(`${os.tmpdir()}/cover.jpg`, response.data)
     Object.keys(metadata).forEach((key) => {
         outputOptions.push('-metadata', `${String(key)}=${metadata[key as 'title' | 'artist' | 'date' | 'album']}`)
     })

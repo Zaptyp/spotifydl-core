@@ -37,7 +37,10 @@ export const downloadYT = async (url: string): Promise<Buffer> => {
  * @param filename the file to save to
  * @returns filename
  */
-export const downloadYTAndSave = async (url: string, filename = (Math.random() + 1).toString(36).substring(7) + '.mp3'): Promise<string> => {
+export const downloadYTAndSave = async (
+    url: string,
+    filename = (Math.random() + 1).toString(36).substring(7) + '.mp3'
+): Promise<string> => {
     const audio = await downloadYT(url)
     try {
         await writeFile(`${os.tmpdir()}/${filename}`, audio)
