@@ -43,7 +43,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "@distube/ytdl-core": "https://github.com/SethuXD/ytdl-core",
+    "@distube/ytdl-core": "^4.15.8",
     "axios": "^1.7.9",
     "fluent-ffmpeg": "^2.1.3",
     "fs-extra": "^11.2.0",
