@@ -5,7 +5,7 @@ import Playlist from './lib/details/Playlist'
 import SongDetails from './lib/details/Track'
 import { downloadYT, downloadYTAndSave } from './lib/download'
 import SpotifyDlError from './lib/Error'
-import getYtlink from './lib/getYtlink'
+import { getYtLink, getYtMusicLink } from './lib/getYtlink'
 import metadata from './lib/metadata'
 
 export default class SpotifyFetcher extends SpotifyApi {
@@ -95,7 +95,10 @@ export default class SpotifyFetcher extends SpotifyApi {
     ): Promise<T extends undefined ? Buffer : string> => {
         await this.verifyCredentials()
         const info = await this.getTrack(url)
-        const link = await getYtlink(`${info.name} ${info.artists[0]}`)
+        let link = await getYtMusicLink(`${info.name} ${info.artists[0]}`)
+        if (link == '') {
+            link = await getYtLink(`${info.name} ${info.artists[0]}`)
+        }
         if (!link) throw new SpotifyDlError(`Couldn't get a download URL for the track: ${info.name}`)
         const data = await downloadYTAndSave(link, filename)
         await metadata(info, data)
@@ -115,7 +118,10 @@ export default class SpotifyFetcher extends SpotifyApi {
      * @returns
      */
     downloadTrackFromInfo = async (info: SongDetails): Promise<Buffer> => {
-        const link = await getYtlink(`${info.name} ${info.artists[0]}`)
+        let link = await getYtMusicLink(`${info.name} ${info.artists[0]}`)
+        if (link == '') {
+            link = await getYtLink(`${info.name} ${info.artists[0]}`)
+        }
         if (!link) throw new SpotifyDlError(`Couldn't get a download URL for the track: ${info.name}`)
         return await downloadYT(link)
     }
