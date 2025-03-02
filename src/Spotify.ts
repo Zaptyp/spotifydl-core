@@ -134,6 +134,7 @@ export default class SpotifyFetcher extends SpotifyApi {
                 try {
                     return await this.downloadTrack(track)
                 } catch (err) {
+                    console.error(err)
                     return ''
                 }
             })
