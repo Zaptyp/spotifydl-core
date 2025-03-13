@@ -16,7 +16,7 @@ export const downloadYT = async (url: string): Promise<Buffer> => {
     const filename = `${Math.random().toString(36).slice(-5)}.mp3`
     const stream = ytdl(url, {
         quality: 'highestaudio',
-        filter: 'audioonly'
+        //filter: 'audioonly'
     })
     return await new Promise((resolve, reject) => {
         Ffmpeg(stream)
