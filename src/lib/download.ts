@@ -21,8 +21,7 @@ export const downloadYT = async (url: string, forceYtdlp = false): Promise<Buffe
 
     if (!forceYtdlp) {
         try {
-            // Próba z ytdl-core
-            console.log('Using ytdl-core for download');
+            // console.log('Using ytdl-core for download');
             stream = ytdl(url, { quality: 'highestaudio', filter: 'audioonly' });
         } catch (err) {
             console.error('ytdl-core error, switching to yt-dlp:', err);
@@ -31,7 +30,7 @@ export const downloadYT = async (url: string, forceYtdlp = false): Promise<Buffe
     }
 
     if (forceYtdlp) {
-        console.log('Forcing yt-dlp download');
+        //console.log('Forcing yt-dlp download');
         const ytdlp = new YTDlpWrap();
         stream = ytdlp.execStream([url, '-f', 'ba', '-x']);
     }
