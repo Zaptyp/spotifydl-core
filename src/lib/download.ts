@@ -34,7 +34,6 @@ export const downloadYT = async (url: string, forceYtdlp = false): Promise<Buffe
         const ytdlp = new YTDlpWrap();
         stream = ytdlp.execStream([url, '-f', 'ba', '-x']);
     }
-    console.log(forceYtdlp)
     return new Promise((resolve, reject) => {
         Ffmpeg(stream)
             .audioBitrate(128)
