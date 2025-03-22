@@ -6,6 +6,7 @@ import axios from 'axios'
 import Ffmpeg from 'fluent-ffmpeg'
 import YTDlpWrap from 'yt-dlp-wrap';
 import { PassThrough, Readable } from 'stream';
+import colors from 'colors'
 
 /**
  * Function to download the give `YTURL`
@@ -13,26 +14,25 @@ import { PassThrough, Readable } from 'stream';
  * @returns `Buffer`
  * @throws Error if the URL is invalid
  */
-export const downloadYT = async (url: string, forceYtdlp = false): Promise<Buffer> => {
+export const downloadYT = async (url: string): Promise<Buffer> => {
+    const ytdlp = new YTDlpWrap();
+    let version: string;
     if (!ytdl.validateURL(url)) throw new SpotifyDlError('Invalid YT URL', 'SpotifyDlError');
-    
+    try {
+        version = await ytdlp.getVersion();
+    } catch (err) {
+        throw new SpotifyDlError('YT-DLP not installed!', 'SpotifyDlError');
+    }
+    let githubYTDLPVersion = await YTDlpWrap.getGithubReleases(1, 3)
+    if (!githubYTDLPVersion[0].tag_name.includes(version.trim() || !githubYTDLPVersion[1].tag_name.includes(version.trim()))) {
+        console.error(colors.yellow('YT-DLP is outdated, update to latest version! Because if you don\'t, you might face issues with downloading songs from YouTube!'));
+        console.error(colors.yellow('Latest version: ' + githubYTDLPVersion[0].tag_name));
+        console.error(colors.yellow('Current version (installed on your system): ' + version));
+    }
     const filename = `${Math.random().toString(36).slice(-5)}.mp3`;
     let streamYT: Readable = new PassThrough();
 
-    if (!forceYtdlp) {
-        try {
-            //console.log('Using ytdl-core for download');
-            streamYT = ytdl(url, { quality: 'highestaudio', filter: 'audioonly' });
-        } catch (err) {
-            console.error('ytdl-core error, switching to yt-dlp:', err);
-            forceYtdlp = true;
-        }
-    }
-    if (forceYtdlp) {
-        //console.log('Forcing yt-dlp download');
-        const ytdlp = new YTDlpWrap();
-        streamYT = ytdlp.execStream([url, '-f', 'ba', '-x']);
-    }
+    streamYT = ytdlp.execStream([url, '-f', 'ba', '-x']);
     return new Promise((resolve, reject) => {
         Ffmpeg(streamYT)
             .audioBitrate(128)
@@ -60,21 +60,9 @@ export const downloadYTAndSave = async (
     url: string,
     filename = `${Math.random().toString(36).slice(-5)}.mp3`
 ): Promise<string> => {
-    try {
-        const audio = await downloadYT(url);
-        await writeFile(`${os.tmpdir()}/${filename}`, audio);
-        return `${os.tmpdir()}/${filename}`;
-    } catch (firstError) {
-        console.error('First download failed, retrying with yt-dlp:', firstError);
-        
-        try {
-            const audio = await downloadYT(url, true);
-            await writeFile(`${os.tmpdir()}/${filename}`, audio);
-            return `${os.tmpdir()}/${filename}`;
-        } catch (secondError) {
-            throw new SpotifyDlError(`Both download attempts failed: ${secondError}`, 'DownloadError');
-        }
-    }
+    const audio = await downloadYT(url);
+    await writeFile(`${os.tmpdir()}/${filename}`, audio);
+    return `${os.tmpdir()}/${filename}`;
 };
 /**
  * Function to get buffer of files with their URLs
