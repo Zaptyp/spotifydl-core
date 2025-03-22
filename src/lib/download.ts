@@ -32,6 +32,9 @@ export const downloadYT = async (url: string, forceYtdlp = false): Promise<Buffe
             const timeout = new Promise((resolve, reject) => 
                 setTimeout(() => {
                     console.error('Czas wykonania funkcji przekroczony');
+                    if (timeoutOccured == true) {
+                        resolve("");
+                    }
                     timeoutOccured = true;
                     reject(new Error('Czas wykonania funkcji przekroczony'))
                 }, 500)
