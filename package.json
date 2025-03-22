@@ -45,6 +45,7 @@
   "dependencies": {
     "@distube/ytdl-core": "4.16.5",
     "axios": "^1.8.4",
+    "colors": "^1.4.0",
     "fluent-ffmpeg": "^2.1.3",
     "fs-extra": "^11.3.0",
     "spotify-web-api-node": "https://github.com/Zaptyp/spotify-web-api-node",
