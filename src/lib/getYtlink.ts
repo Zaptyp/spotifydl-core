@@ -6,7 +6,7 @@ export async function getYtLink(term: string): Promise<string> {
     const { videos } = await yts.search(term)
     if (videos && videos.length > 0) {
         const video = videos.filter((video) => video.seconds < 3600)[0]
-        console.log(video)
+        //console.log(video)
         if (video) return video.url
     }
     return ''

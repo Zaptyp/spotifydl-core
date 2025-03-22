@@ -61,14 +61,12 @@ export const downloadYTAndSave = async (
     filename = `${Math.random().toString(36).slice(-5)}.mp3`
 ): Promise<string> => {
     try {
-        // Pierwsza próba z ytdl-core
         const audio = await downloadYT(url);
         await writeFile(`${os.tmpdir()}/${filename}`, audio);
         return `${os.tmpdir()}/${filename}`;
     } catch (firstError) {
         console.error('First download failed, retrying with yt-dlp:', firstError);
         
-        // Druga próba z wymuszeniem yt-dlp
         try {
             const audio = await downloadYT(url, true);
             await writeFile(`${os.tmpdir()}/${filename}`, audio);
