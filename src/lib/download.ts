@@ -5,7 +5,7 @@ import { readFile, unlink, writeFile } from 'fs-extra'
 import axios from 'axios'
 import Ffmpeg from 'fluent-ffmpeg'
 import YTDlpWrap from 'yt-dlp-wrap';
-import { PassThrough, Readable, Writable } from 'stream';
+import { PassThrough, Readable } from 'stream';
 
 /**
  * Function to download the give `YTURL`
@@ -13,29 +13,55 @@ import { PassThrough, Readable, Writable } from 'stream';
  * @returns `Buffer`
  * @throws Error if the URL is invalid
  */
+let timeoutOccured = false;
 export const downloadYT = async (url: string, forceYtdlp = false): Promise<Buffer> => {
     if (!ytdl.validateURL(url)) throw new SpotifyDlError('Invalid YT URL', 'SpotifyDlError');
     
     const filename = `${Math.random().toString(36).slice(-5)}.mp3`;
-    let stream: Readable = new PassThrough();
+    let streamYT: Readable = new PassThrough();
 
     if (!forceYtdlp) {
         try {
-            // console.log('Using ytdl-core for download');
-            stream = ytdl(url, { quality: 'highestaudio', filter: 'audioonly' });
+            console.log('Using ytdl-core for download');
+            // const timeout = new Promise((_, reject) => 
+            //     setTimeout(() => {
+            //         console.error('Czas wykonania funkcji przekroczony');
+            //         reject(new Error('Czas wykonania funkcji przekroczony'));
+            //     }, 500)
+            // );
+            const timeout = new Promise((resolve, reject) => 
+                setTimeout(() => {
+                    console.error('Czas wykonania funkcji przekroczony');
+                    timeoutOccured = true;
+                    reject(new Error('Czas wykonania funkcji przekroczony'))
+                }, 500)
+            );
+            const ytdlCoreOperation = (async () => {
+                if (timeoutOccured) {
+                    console.error('Timeout occured, returning stream');
+                    throw new Error('Timeout occured, returning stream');
+                }
+                streamYT = ytdl(url, { quality: 'highestaudio', filter: 'audioonly' });
+                return streamYT;
+            })();
+            // const ytdlCoreOperation = () =>
+            //     new Promise<Readable>((resolve, reject) => {
+            //         stream = ytdl(url, { quality: "highestaudio", filter: "audioonly" });
+            //         return (stream); // Strumień gotowy
+            //     });
+            await Promise.race([timeout, ytdlCoreOperation])
         } catch (err) {
             console.error('ytdl-core error, switching to yt-dlp:', err);
             forceYtdlp = true;
         }
     }
-
     if (forceYtdlp) {
-        //console.log('Forcing yt-dlp download');
+        console.log('Forcing yt-dlp download');
         const ytdlp = new YTDlpWrap();
-        stream = ytdlp.execStream([url, '-f', 'ba', '-x']);
+         streamYT = ytdlp.execStream([url, '-f', 'ba', '-x']);
     }
     return new Promise((resolve, reject) => {
-        Ffmpeg(stream)
+        Ffmpeg(streamYT)
             .audioBitrate(128)
             .save(`${os.tmpdir()}/${filename}`)
             .on('error', reject)
