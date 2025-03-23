@@ -7,7 +7,6 @@
     "dist/**/*"
   ],
   "types": "dist",
-  "type": "commonjs",
   "scripts": {
     "build": "tsc -p .",
     "test": "node tests",
