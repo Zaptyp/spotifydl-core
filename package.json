@@ -7,6 +7,7 @@
     "dist/**/*"
   ],
   "types": "dist",
+  "type": "commonjs",
   "scripts": {
     "build": "tsc -p .",
     "test": "node tests",
@@ -43,7 +44,6 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "@distube/ytdl-core": "4.16.5",
     "axios": "^1.8.4",
     "colors": "^1.4.0",
     "fluent-ffmpeg": "^2.1.3",
