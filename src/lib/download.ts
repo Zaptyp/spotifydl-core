@@ -1,5 +1,4 @@
 import os from 'os'
-import ytdl from '@distube/ytdl-core'
 import SpotifyDlError from './Error'
 import { readFile, unlink, writeFile } from 'fs-extra'
 import axios from 'axios'
@@ -17,7 +16,7 @@ import colors from 'colors'
 export const downloadYT = async (url: string): Promise<Buffer> => {
     const ytdlp = new YTDlpWrap();
     let version: string;
-    if (!ytdl.validateURL(url)) throw new SpotifyDlError('Invalid YT URL', 'SpotifyDlError');
+    if (!ytdlp.validateURL(url)) throw new SpotifyDlError('Invalid YT URL', 'SpotifyDlError');
     try {
         version = await ytdlp.getVersion();
     } catch (err) {
