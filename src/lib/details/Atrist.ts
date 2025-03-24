@@ -1,4 +1,4 @@
-import { IArtist } from '../../typings'
+import { IArtist } from '../../typings/index.js'
 
 export default class Artist implements IArtist {
     constructor(

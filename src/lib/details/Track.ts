@@ -1,4 +1,4 @@
-import { ITrack } from '../../typings'
+import { ITrack } from '../../typings/index.js'
 
 export default class TrackDetails implements ITrack {
     constructor(

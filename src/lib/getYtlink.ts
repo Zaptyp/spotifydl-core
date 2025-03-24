@@ -1,6 +1,6 @@
 import yts from 'yt-search'
 import YTMusic, { SongDetailed } from 'ytmusic-api'
-import SpotifyDlError from "./Error"
+import SpotifyDlError from "./Error.js"
 
 export async function getYtLink(term: string): Promise<string> {
     const { videos } = await yts.search(term)

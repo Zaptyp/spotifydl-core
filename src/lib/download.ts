@@ -1,6 +1,8 @@
 import os from 'os'
-import SpotifyDlError from './Error'
-import { readFile, unlink, writeFile } from 'fs-extra'
+import SpotifyDlError from './Error.js'
+//import { readFile, unlink, writeFile } from 'fs-extra'
+import fsextra from 'fs-extra';
+const { readFile, unlink, writeFile } = fsextra;
 import axios from 'axios'
 import Ffmpeg from 'fluent-ffmpeg'
 import YTDlpWrap from 'yt-dlp-wrap';
@@ -43,6 +45,7 @@ export const downloadYT = async (url: string): Promise<Buffer> => {
                     await unlink(`${os.tmpdir()}/${filename}`);
                     resolve(buffer);
                 } catch (err) {
+                    console.error(err);
                     reject(new SpotifyDlError('File processing failed', 'FileError'));
                 }
             });

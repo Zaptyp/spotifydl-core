@@ -1,4 +1,4 @@
-import { IPlaylist } from '../../typings'
+import { IPlaylist } from '../../typings/index.js'
 
 export default class Playlist implements IPlaylist {
     constructor(

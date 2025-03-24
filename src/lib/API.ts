@@ -1,7 +1,7 @@
 import SpotifyAPI from 'spotify-web-api-node'
-import Artist from './details/Atrist'
-import Playlist from './details/Playlist'
-import TrackDetails from './details/Track'
+import Artist from './details/Atrist.js'
+import Playlist from './details/Playlist.js'
+import TrackDetails from './details/Track.js'
 
 const MAX_LIMIT_DEFAULT = 50
 const REFRESH_ACCESS_TOKEN_SECONDS = 55 * 60

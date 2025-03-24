@@ -1,9 +1,11 @@
 import Ffmpeg from 'fluent-ffmpeg'
 import { renameSync, unlinkSync } from 'fs'
-import { IMetadata, ITrack } from '../typings'
+import { IMetadata, ITrack } from '../typings/index.js'
 import axios from 'axios'
 import os from 'os'
-import { writeFileSync } from 'fs-extra'
+//import { writeFileSync } from 'fs-extra'
+import fsextra from 'fs-extra';
+const { writeFileSync } = fsextra;
 
 export default async (data: ITrack, file: string): Promise<string> => {
     const outputOptions: string[] = ['-map', '0:0', '-map', '1', '-codec', 'copy']

@@ -1,12 +1,14 @@
-import { promises, unlink } from 'fs-extra'
-import SpotifyApi, { IAuth, UserObjectPublic } from './lib/API'
-import Artist from './lib/details/Atrist'
-import Playlist from './lib/details/Playlist'
-import SongDetails from './lib/details/Track'
-import { downloadYT, downloadYTAndSave } from './lib/download'
-import SpotifyDlError from './lib/Error'
-import { getYtLink, getYtMusicLink } from './lib/getYtlink'
-import metadata from './lib/metadata'
+//import { promises, unlink } from 'fs-extra'
+import fsextra from 'fs-extra';
+const { promises, unlink } = fsextra;
+import SpotifyApi, { IAuth, UserObjectPublic } from './lib/API.js'
+import Artist from './lib/details/Atrist.js'
+import Playlist from './lib/details/Playlist.js'
+import SongDetails from './lib/details/Track.js'
+import { downloadYT, downloadYTAndSave } from './lib/download.js'
+import SpotifyDlError from './lib/Error.js'
+import { getYtLink, getYtMusicLink } from './lib/getYtlink.js'
+import metadata from './lib/metadata.js'
 
 export default class SpotifyFetcher extends SpotifyApi {
     constructor(auth: IAuth) {

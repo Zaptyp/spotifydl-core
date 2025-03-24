@@ -7,6 +7,7 @@
     "dist/**/*"
   ],
   "types": "dist",
+  "type": "module",
   "scripts": {
     "build": "tsc -p .",
     "test": "node tests",
