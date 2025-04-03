@@ -1,6 +1,6 @@
 {
-  "name": "spotifydl-core",
-  "version": "0.2.1",
+  "name": "@zaptyp/spotifydl-core",
+  "version": "0.4.0",
   "description": "Spotify downloader for node",
   "main": "dist/index.js",
   "files": [
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alensaito1/spotifydl-core.git"
+    "url": "git+https://github.com/Zaptyp/spotifydl-core.git"
   },
   "keywords": [
     "spotify",
@@ -27,9 +27,9 @@
   "author": "Alen Yohannan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alensaito1/spotifydl-core/issues"
+    "url": "https://github.com/Zaptyp/spotifydl-core/issues"
   },
-  "homepage": "https://github.com/alensaito1/spotifydl-core#readme",
+  "homepage": "https://github.com/Zaptyp/spotifydl-core#readme",
   "devDependencies": {
     "@types/fluent-ffmpeg": "^2.1.27",
     "@types/fs-extra": "^11.0.4",
@@ -44,12 +44,12 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "@zaptyp/spotify-web-api-node": "^5.1.1",
     "axios": "^1.8.4",
     "colors": "^1.4.0",
     "fluent-ffmpeg": "^2.1.3",
     "fs-extra": "^11.3.0",
-    "spotify-web-api-node": "https://github.com/Zaptyp/spotify-web-api-node",
-    "yt-dlp-wrap": "https://github.com/Zaptyp/yt-dlp-wrap-plus",
+    "yt-dlp-core": "^2.4.0",
     "yt-search": "^2.12.1",
     "ytmusic-api": "^5.3.0"
   },
