@@ -5,7 +5,7 @@ import fsextra from 'fs-extra';
 const { readFile, unlink, writeFile } = fsextra;
 import axios from 'axios'
 import Ffmpeg from 'fluent-ffmpeg'
-import YTDlpWrap from 'yt-dlp-wrap';
+import YTDlpWrap from 'yt-dlp-core';
 import { PassThrough, Readable } from 'stream';
 import colors from 'colors'
 
