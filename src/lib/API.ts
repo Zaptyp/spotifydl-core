@@ -1,4 +1,4 @@
-import SpotifyAPI from 'spotify-web-api-node'
+import SpotifyAPI from '@zaptyp/spotify-web-api-node'
 import Artist from './details/Atrist.js'
 import Playlist from './details/Playlist.js'
 import TrackDetails from './details/Track.js'
