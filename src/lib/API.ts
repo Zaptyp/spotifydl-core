@@ -53,24 +53,30 @@ export default class SpotifyApi {
     }
 
     extractPlaylist = async (playlistId: string): Promise<Playlist> => {
-        const data = (await this.spotifyAPI.getPlaylist(playlistId)).body
+        const playlistData = (await this.spotifyAPI.getPlaylist(playlistId)).body
+        const tracksData = (await this.spotifyAPI.getPlaylistTracks(playlistId)).body
         const details = new Playlist(
             '',
             [],
             0,
-            data.tracks.items.map((item) => item.track!.id)
+            tracksData.items
+                .map((item) => item.track?.id)
+                .filter((trackId): trackId is string => Boolean(trackId))
         )
-
-        details.name = data.name + ' - ' + data.owner.display_name
-        details.total_tracks = data.tracks.total
-        details.artists = data.owner.display_name ? [data.owner.display_name] : []
-        if (data.tracks.next) {
+        details.name = playlistData.name + ' - ' + (playlistData.owner.display_name ?? '')
+        details.total_tracks = playlistData.tracks.total
+        details.artists = playlistData.owner.display_name ? [playlistData.owner.display_name] : []
+        if (tracksData.next) {
             let offset = details.tracks.length
             while (details.tracks.length < details.total_tracks) {
                 const playlistTracksData = (
                     await this.spotifyAPI.getPlaylistTracks(playlistId, { limit: MAX_LIMIT_DEFAULT, offset: offset })
                 ).body
-                details.tracks = details.tracks.concat(playlistTracksData.items.map((item) => item.track!.id))
+                details.tracks = details.tracks.concat(
+                    playlistTracksData.items
+                        .map((item) => item.track?.id)
+                        .filter((trackId): trackId is string => Boolean(trackId))
+                )
                 offset += MAX_LIMIT_DEFAULT
             }
         }
