@@ -6,7 +6,7 @@ import TrackDetails from './details/Track.js'
 const MAX_LIMIT_DEFAULT = 50
 const REFRESH_ACCESS_TOKEN_SECONDS = 55 * 60
 
-export default class SpotifyApi {
+export default class SpotifyApiClient {
     private spotifyAPI: SpotifyAPI
 
     nextTokenRefreshTime!: Date
@@ -43,7 +43,7 @@ export default class SpotifyApi {
         const data = (await this.spotifyAPI.getTrack(trackId)).body
         const details = new TrackDetails()
         details.name = data.name
-        data.artists.forEach((artist) => {
+        data.artists.forEach((artist: any) => {
             details.artists.push(artist.name)
         })
         details.album_name = data.album.name
@@ -60,8 +60,8 @@ export default class SpotifyApi {
             [],
             0,
             tracksData.items
-                .map((item) => item.track?.id)
-                .filter((trackId): trackId is string => Boolean(trackId))
+                .map((item: any) => item.track?.id)
+                .filter((trackId: any): trackId is string => Boolean(trackId))
         )
         details.name = playlistData.name + ' - ' + (playlistData.owner.display_name ?? '')
         details.total_tracks = playlistData.tracks.total
@@ -74,8 +74,8 @@ export default class SpotifyApi {
                 ).body
                 details.tracks = details.tracks.concat(
                     playlistTracksData.items
-                        .map((item) => item.track?.id)
-                        .filter((trackId): trackId is string => Boolean(trackId))
+                        .map((item: any) => item.track?.id)
+                        .filter((trackId: any): trackId is string => Boolean(trackId))
                 )
                 offset += MAX_LIMIT_DEFAULT
             }
@@ -89,11 +89,11 @@ export default class SpotifyApi {
             '',
             [],
             0,
-            data.tracks.items.map((item) => item.id)
+            data.tracks.items.map((item: any) => item.id)
         )
         details.name = data.name + ' - ' + data.label + ' - ' + data.artists[0].name
         details.total_tracks = data.tracks.total
-        data.artists.forEach((artist) => {
+        data.artists.forEach((artist: any) => {
             details.artists.push(artist.name)
         })
         if (data.tracks.next) {
@@ -102,7 +102,7 @@ export default class SpotifyApi {
                 const albumTracks = (
                     await this.spotifyAPI.getAlbumTracks(albumId, { limit: MAX_LIMIT_DEFAULT, offset: offset })
                 ).body
-                details.tracks = details.tracks.concat(albumTracks.items.map((item) => item.id))
+                details.tracks = details.tracks.concat(albumTracks.items.map((item: any) => item.id))
                 offset += MAX_LIMIT_DEFAULT
             }
         }
@@ -114,7 +114,7 @@ export default class SpotifyApi {
         return new Artist(data.id, data.name, data.href)
     }
 
-    extractArtistAlbums = async (artistId: string): Promise<SpotifyApi.AlbumObjectSimplified[]> => {
+    extractArtistAlbums = async (artistId: string): Promise<any[]> => {
         const artistAlbums = (await this.spotifyAPI.getArtistAlbums(artistId, { limit: MAX_LIMIT_DEFAULT })).body
         let albums = artistAlbums.items
         if (artistAlbums.next) {
